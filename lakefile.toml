@@ -1,0 +1,10 @@
+name = "urjo"
+version = "0.1.0"
+defaultTargets = ["urjo"]
+
+[[lean_lib]]
+name = "Urjo"
+
+[[lean_exe]]
+name = "urjo"
+root = "Main"
