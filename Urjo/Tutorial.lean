@@ -18,55 +18,21 @@ example: Nonempty (UniqueSolutionFor tutorialGrid) := by
   apply Nonempty.intro
   unfold tutorialGrid
 
-  put .blue at (0, 3) by
-    apply Grid.columnBad_imp_impossible 0 .red
-    decide
-
-  put .red at (1, 2) by
-    apply Grid.rowBad_imp_impossible 2 .blue
-    decide
-
-  put .red at (2, 2) by
-    apply Grid.rowBad_imp_impossible 2 .blue
-    decide
-
-  put .blue at (1, 0) by
-    apply Grid.numberBad_imp_impossible {x := (Fin.mk 0 (by grind)), y := (Fin.mk 1 (by grind))}
-    decide
-
-  put .blue at (1, 1) by
-    apply Grid.numberBad_imp_impossible {x := (Fin.mk 0 (by grind)), y := (Fin.mk 1 (by grind))}
-    decide
-
-  put .red at (1, 3) by
-    apply Grid.columnBad_imp_impossible 1 .blue
-    decide
+  put .blue at (0, 3) by bad_column at 0 with .red
+  put .red at (1, 2) by bad_row at 2 with .blue
+  put .red at (2, 2) by bad_row at 2 with .blue
+  put .blue at (1, 0) by bad_num at (0, 1)
+  put .blue at (1, 1) by bad_num at (0, 1)
+  put .red at (1, 3) by bad_column at 1 with .blue
 
   put .blue at (2, 3) by
     split_color .red at (3, 3)
-    · apply Grid.rowBad_imp_impossible 3 .red
-      decide
-    · apply Grid.consecutiveRowBad_imp_impossible 2
-      decide
+    · bad_row at 3 with .red
+    · consecutive_row at 2
 
-  put .red at (3, 3) by
-    apply Grid.rowBad_imp_impossible 3 .blue
-    decide
-
-  put .red at (2, 1) by
-    apply Grid.numberBad_imp_impossible {x := (Fin.mk 1 (by grind)), y := (Fin.mk 2 (by grind))}
-    decide
-
-  put .blue at (2, 0) by
-    apply Grid.columnBad_imp_impossible 2 .red
-    decide
-
-  put .red at (3, 0) by
-    apply Grid.rowBad_imp_impossible 0 .blue
-    decide
-
-  put .blue at (3, 1) by
-    apply Grid.columnBad_imp_impossible 3 .red
-    decide
-
+  put .red at (3, 3) by bad_row at 3 with .blue
+  put .red at (2, 1) by bad_num at (1, 2)
+  put .blue at (2, 0) by bad_column at 2 with .red
+  put .red at (3, 0) by bad_row at 0 with .blue
+  put .blue at (3, 1) by bad_column at 3 with .red
   solved

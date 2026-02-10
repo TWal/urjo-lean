@@ -419,4 +419,49 @@ macro_rules
   | `(tactic| solved) =>
     `(tactic| apply Grid.finish_tactic <;> decide)
 
+syntax "bad_column" "at"  num "with" term : tactic
+
+macro_rules
+  | `(tactic| bad_column at $x:num with $col:term ) =>
+    `(tactic|
+      apply Grid.columnBad_imp_impossible $x $col;
+      decide
+    )
+
+syntax "bad_row" "at"  num "with" term : tactic
+
+macro_rules
+  | `(tactic| bad_row at $x:num with $col:term ) =>
+    `(tactic|
+      apply Grid.rowBad_imp_impossible $x $col;
+      decide
+    )
+
+syntax "bad_num" "at" " (" num ", " num ") " : tactic
+
+macro_rules
+  | `(tactic| bad_num at ($x:num, $y:num)) =>
+    `(tactic|
+      apply Grid.numberBad_imp_impossible {x := (Fin.mk $x (by grind)), y := (Fin.mk $y (by grind))};
+      decide
+    )
+
+syntax "consecutive_row" "at" num : tactic
+
+macro_rules
+  | `(tactic| consecutive_row at $y:num) =>
+    `(tactic|
+      apply Grid.consecutiveRowBad_imp_impossible $y;
+      decide
+    )
+
+syntax "consecutive_column" "at" num : tactic
+
+macro_rules
+  | `(tactic| consecutive_column at $x:num) =>
+    `(tactic|
+      apply Grid.consecutiveColumnBad_imp_impossible $x;
+      decide
+    )
+
 end Tactics
