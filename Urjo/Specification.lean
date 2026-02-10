@@ -122,12 +122,21 @@ def Grid.ConsecutiveRowGood {n m: Nat} (grid: Grid n m) (y: Fin (m-1)): Prop :=
   grid.getArea (.row n) (0, y.val+1)
 deriving Decidable
 
+def Grid.ConsecutiveColumnGood {n m: Nat} (grid: Grid n m) (x: Fin (n-1)): Prop :=
+  grid.getArea (.column m) (x.val, 0) ≠
+  grid.getArea (.column m) (x.val+1, 0)
+deriving Decidable
+
 def Grid.IsValid {n m: Nat} (grid: Grid n m): Prop :=
   grid.IsComplete ∧
+  -- Each line must contain an equal number of red and blue spots.
   (∀ y, grid.RowGood y) ∧
   (∀ x, grid.ColumnGood x) ∧
+  -- Numbers indicate how many surrounding spots are the same color as the numbered spot.
   (∀ idx, grid.NumberGood idx) ∧
-  (∀ y, grid.ConsecutiveRowGood y)
+  -- Adjacent lines must be different.
+  (∀ y, grid.ConsecutiveRowGood y) ∧
+  (∀ x, grid.ConsecutiveColumnGood x)
 deriving Decidable
 
 def Grid.IsSolutionFor {n m: Nat} (solution grid: Grid n m): Prop :=

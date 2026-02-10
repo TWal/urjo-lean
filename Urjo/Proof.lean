@@ -363,6 +363,28 @@ theorem Grid.consecutiveRowBad_imp_impossible
   have := Grid.areaIsComplete_getArea_le grid solution (.row n) (0, y.val+1) (by grind) (by grind)
   grind
 
+def Grid.ConsecutiveColumnBad {n m: Nat} (grid: Grid n m) (x: Fin (n-1)): Prop :=
+  grid.AreaIsComplete (.column m) (x.val, 0) ∧
+  grid.AreaIsComplete (.column m) (x.val+1, 0) ∧
+  grid.getArea (.column m) (x.val, 0) =
+  grid.getArea (.column m) (x.val+1, 0)
+deriving Decidable
+
+theorem Grid.consecutiveColumnBad_imp_impossible
+  {n m: Nat}
+  {grid: Grid n m}
+  (x: Fin (n-1))
+  : grid.ConsecutiveColumnBad x → grid.Impossible
+:= by
+  intro h_bad solution h_le
+  suffices solution.IsComplete → ¬ solution.ConsecutiveColumnGood x by
+    grind [Grid.IsValid]
+  intro h_complete
+  simp_all [ConsecutiveColumnGood, ConsecutiveColumnBad]
+  have := Grid.areaIsComplete_getArea_le grid solution (.column m) (x.val, 0) (by grind) (by grind)
+  have := Grid.areaIsComplete_getArea_le grid solution (.column m) (x.val+1, 0) (by grind) (by grind)
+  grind
+
 end ImpossibleTheorems
 
 section Tactics
