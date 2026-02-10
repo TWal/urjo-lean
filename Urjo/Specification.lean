@@ -66,7 +66,7 @@ def Area.square33: Area where
   size := (3, 3)
   from_ := (1, 1)
 
-def Area.line (n: Nat): Area where
+def Area.row (n: Nat): Area where
   size := (n, 1)
   from_ := (0, 0)
 
@@ -95,9 +95,9 @@ def Grid.IsComplete {n m: Nat} (grid: Grid n m): Prop :=
   ∀ idx: GridIndex n m, grid[idx].color ≠ none
 deriving Decidable
 
-def Grid.LineGood {n m: Nat} (grid: Grid n m) (y: Fin m): Prop :=
-  grid.countArea (.line n) .blue (0, y.val) =
-  grid.countArea (.line n) .red  (0, y.val)
+def Grid.RowGood {n m: Nat} (grid: Grid n m) (y: Fin m): Prop :=
+  grid.countArea (.row n) .blue (0, y.val) =
+  grid.countArea (.row n) .red  (0, y.val)
 deriving Decidable
 
 def Grid.ColumnGood {n m: Nat} (grid: Grid n m) (x: Fin n): Prop :=
@@ -117,17 +117,17 @@ instance {n m: Nat} (grid: Grid n m) (idx: GridIndex n m): Decidable (grid.Numbe
     split <;>
     infer_instance
 
-def Grid.ConsecutiveLineGood {n m: Nat} (grid: Grid n m) (y: Fin (m-1)): Prop :=
-  grid.getArea (.line n) (0, y.val) ≠
-  grid.getArea (.line n) (0, y.val+1)
+def Grid.ConsecutiveRowGood {n m: Nat} (grid: Grid n m) (y: Fin (m-1)): Prop :=
+  grid.getArea (.row n) (0, y.val) ≠
+  grid.getArea (.row n) (0, y.val+1)
 deriving Decidable
 
 def Grid.IsValid {n m: Nat} (grid: Grid n m): Prop :=
   grid.IsComplete ∧
-  (∀ y, grid.LineGood y) ∧
+  (∀ y, grid.RowGood y) ∧
   (∀ x, grid.ColumnGood x) ∧
   (∀ idx, grid.NumberGood idx) ∧
-  (∀ y, grid.ConsecutiveLineGood y)
+  (∀ y, grid.ConsecutiveRowGood y)
 deriving Decidable
 
 def Grid.IsSolutionFor {n m: Nat} (solution grid: Grid n m): Prop :=

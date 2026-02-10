@@ -254,23 +254,23 @@ end MainTheorems
 
 section ImpossibleTheorems
 
-def Grid.LineBad {n m: Nat} (grid: Grid n m) (y: Fin m) (col: Color): Prop :=
-  (grid.areaSize (.line n) (0, y.val)) < 2*(grid.countArea (.line n) col (0, y.val))
+def Grid.RowBad {n m: Nat} (grid: Grid n m) (y: Fin m) (col: Color): Prop :=
+  (grid.areaSize (.row n) (0, y.val)) < 2*(grid.countArea (.row n) col (0, y.val))
 deriving Decidable
 
-theorem Grid.lineBad_imp_impossible
+theorem Grid.rowBad_imp_impossible
   {n m: Nat}
   {grid: Grid n m}
   (y: Fin m) (col: Color)
-  : grid.LineBad y col → grid.Impossible
+  : grid.RowBad y col → grid.Impossible
 := by
   intro h_bad solution h_le
-  suffices solution.IsComplete → ¬ solution.LineGood y by
+  suffices solution.IsComplete → ¬ solution.RowGood y by
     grind [Grid.IsValid]
   intro h_complete
-  simp_all only [LE.le, Grid.IsComplete, Grid.LineGood, Grid.LineBad]
-  have := Grid.countArea_le grid solution (.line n) col (0, y.val) h_le
-  have := Grid.complete_countArea solution (.line n) (0, y.val) h_complete
+  simp_all only [LE.le, Grid.IsComplete, Grid.RowGood, Grid.RowBad]
+  have := Grid.countArea_le grid solution (.row n) col (0, y.val) h_le
+  have := Grid.complete_countArea solution (.row n) (0, y.val) h_complete
   grind [cases Color, Grid.areaSize]
 
 def Grid.ColumnBad {n m: Nat} (grid: Grid n m) (x: Fin n) (col: Color): Prop :=
@@ -341,26 +341,26 @@ theorem Grid.areaIsComplete_getArea_le
   simp
   grind
 
-def Grid.ConsecutiveLineBad {n m: Nat} (grid: Grid n m) (y: Fin (m-1)): Prop :=
-  grid.AreaIsComplete (.line n) (0, y.val) ∧
-  grid.AreaIsComplete (.line n) (0, y.val+1) ∧
-  grid.getArea (.line n) (0, y.val) =
-  grid.getArea (.line n) (0, y.val+1)
+def Grid.ConsecutiveRowBad {n m: Nat} (grid: Grid n m) (y: Fin (m-1)): Prop :=
+  grid.AreaIsComplete (.row n) (0, y.val) ∧
+  grid.AreaIsComplete (.row n) (0, y.val+1) ∧
+  grid.getArea (.row n) (0, y.val) =
+  grid.getArea (.row n) (0, y.val+1)
 deriving Decidable
 
-theorem Grid.consecutiveLineBad_imp_impossible
+theorem Grid.consecutiveRowBad_imp_impossible
   {n m: Nat}
   {grid: Grid n m}
   (y: Fin (m-1))
-  : grid.ConsecutiveLineBad y → grid.Impossible
+  : grid.ConsecutiveRowBad y → grid.Impossible
 := by
   intro h_bad solution h_le
-  suffices solution.IsComplete → ¬ solution.ConsecutiveLineGood y by
+  suffices solution.IsComplete → ¬ solution.ConsecutiveRowGood y by
     grind [Grid.IsValid]
   intro h_complete
-  simp_all [ConsecutiveLineGood, ConsecutiveLineBad]
-  have := Grid.areaIsComplete_getArea_le grid solution (.line n) (0, y.val) (by grind) (by grind)
-  have := Grid.areaIsComplete_getArea_le grid solution (.line n) (0, y.val+1) (by grind) (by grind)
+  simp_all [ConsecutiveRowGood, ConsecutiveRowBad]
+  have := Grid.areaIsComplete_getArea_le grid solution (.row n) (0, y.val) (by grind) (by grind)
+  have := Grid.areaIsComplete_getArea_le grid solution (.row n) (0, y.val+1) (by grind) (by grind)
   grind
 
 end ImpossibleTheorems

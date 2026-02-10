@@ -23,11 +23,11 @@ example: Nonempty (UniqueSolutionFor tutorialGrid) := by
     decide
 
   put .red at (1, 2) by
-    apply Grid.lineBad_imp_impossible 2 .blue
+    apply Grid.rowBad_imp_impossible 2 .blue
     decide
 
   put .red at (2, 2) by
-    apply Grid.lineBad_imp_impossible 2 .blue
+    apply Grid.rowBad_imp_impossible 2 .blue
     decide
 
   put .blue at (1, 0) by
@@ -44,13 +44,13 @@ example: Nonempty (UniqueSolutionFor tutorialGrid) := by
 
   put .blue at (2, 3) by
     split_color .red at (3, 3)
-    · apply Grid.lineBad_imp_impossible 3 .red
+    · apply Grid.rowBad_imp_impossible 3 .red
       decide
-    · apply Grid.consecutiveLineBad_imp_impossible 2
+    · apply Grid.consecutiveRowBad_imp_impossible 2
       decide
 
   put .red at (3, 3) by
-    apply Grid.lineBad_imp_impossible 3 .blue
+    apply Grid.rowBad_imp_impossible 3 .blue
     decide
 
   put .red at (2, 1) by
@@ -62,7 +62,7 @@ example: Nonempty (UniqueSolutionFor tutorialGrid) := by
     decide
 
   put .red at (3, 0) by
-    apply Grid.lineBad_imp_impossible 0 .blue
+    apply Grid.rowBad_imp_impossible 0 .blue
     decide
 
   put .blue at (3, 1) by
